@@ -1,0 +1,21 @@
+name: ai_renewable
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - geopandas
+  - rasterio
+  - rioxarray
+  - xarray
+  - numpy
+  - pandas
+  - matplotlib
+  - shapely
+  - pyproj
+  - fiona
+  - pip
+  - pip:
+      - streamlit
+      - folium
+      - rasterstats
