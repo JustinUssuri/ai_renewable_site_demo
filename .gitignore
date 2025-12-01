@@ -5,3 +5,9 @@
 # Python artifacts
 __pycache__/
 *.pyc
+data/raw/
+data/interim/
+data/processed/
+*.tif
+*.aux.xml
+*.zip
