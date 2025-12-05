@@ -43,20 +43,26 @@
 ## Phase 2：特征工程（进行中）
 **目标**：为每个 4.4km 栅格计算特征，并检查分布。
 
+### 任务 0：通用加载封装
+- [ ] 为辐照度/DEM/土地利用/距离等常用栅格提供 `load_*` 接口，统一默认路径、掩膜处理和 CRS 校验。  
+  - [x] 辐照度、坡度、DEM 已封装 `load_irradiance` / `load_slope` / `load_dem`。  
+  - [x] 土地利用封装 `load_landcover` 已就绪（默认指向重采样后栅格）。  
+  - [x] 距离栅格（电网/道路）封装 `load_dist_roads` / `load_dist_grid` 已添加。
+
 ### 任务 1：坡度
 - [x] 生成坡度栅格（4.4km，对齐辐照度）：`data/interim/slope_resampled_to_irradiance.tif`（脚本：`scripts/compute_slope_resampled.py`）。
-- [ ] 在 `src/features/` 中封装加载/复用坡度的接口（便于评分与后续特征计算）。
+- [x] 在 `src/features/` 中封装加载/复用坡度的接口（便于评分与后续特征计算）。
 
 ### 任务 2：土地利用
-- [ ] 下载土地利用数据（如 CLC2018 / 国家土地覆盖）→ `data/raw/landcover.*`
-- [ ] 重投影并裁剪到研究区 → `landcover_clipped.*`
+- [x] 下载土地利用数据（CLC2018 100m）→ `data/raw/U2018_CLC2018_V2020_20u1.tif`
+- [x] 重投影并对齐到辐照度 4.4km 网格 → `data/interim/landcover_resampled_to_irradiance.tif`（`scripts/clip_landcover_to_irradiance.py`）；分布直方图 `data/interim/landcover_class_hist.png`
 
-### 任务 3：电网与道路距离
-- [ ] 收集电网/道路矢量数据 → `data/raw/power_lines.*`, `data/raw/roads.*`
-- [ ] 计算距离栅格并与辐照度网格对齐 → `dist_grid.tif`, `dist_roads.tif`
+### 任务 3：电网与道路距离（本期暂缓重算）
+- [x] 收集电网/道路矢量数据 → Geofabrik Shapefile（道路）+ OSM PBF 过滤电力线，生成 `data/raw/power_lines.gpkg`。  
+- [x] 计算占位版距离栅格 → `dist_grid.tif`, `dist_roads.tif`（4.4km 直接栅格化，0 值占比高）；**高分辨率重算与阈值应用放到下一期**。
 
 ### 任务 4：特征检查 notebook
-- [ ] 在 `notebooks/02_feature_engineering.ipynb` 展示坡度/距离/土地利用/辐照度分布，做直方图与候选阈值备注。
+- [x] 在 `notebooks/02_feature_engineering.ipynb` 展示坡度/距离/土地利用分布，含直方图与 sys.path 处理（距离分布因粗分辨率占位数据偏斜，重算后再更新）。
 
 **Done 标准**：`data/interim/` 下存在 `slope_resampled_to_irradiance.tif`、`dist_grid.tif`、`dist_roads.tif`、`landcover_clipped.*`；`02_feature_engineering.ipynb` 展示分布并记录阈值。
 
@@ -82,7 +88,7 @@
 ---
 
 ## 下一步优先级
-1) 跑通 `01_explore_data.ipynb`（含坡度单元），确认 PNG 预览输出 OK。  
-2) 在 `src/features/` 中加上坡度加载入口，准备 Phase 2 评分。  
-3) 规划土地利用与电网/道路数据源，确定下载/预处理脚本清单。  
-4) 文档补充分辨率/掩膜约束（以辐照度 4.4km 为基准）。 
+1) 启动评分阶段：确定使用的特征组合（辐照度、坡度、土地利用；距离暂不入模或仅参考），设计标准化与权重方案。  
+2) 构建可用性掩膜：坡度阈值、土地利用白名单，生成 `mask_available`；落地评分公式并输出占位版 `score.tif`。  
+3) 起草 `03_scoring_and_maps.ipynb`：热力图/TopN 规划、指标拆解展示。  
+4) 文档补充分辨率/掩膜约束与距离数据局限说明（距离重算留待下一期）。 
