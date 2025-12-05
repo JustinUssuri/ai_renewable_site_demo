@@ -1,15 +1,13 @@
-从现在开始，请你严格按下面的方式帮我写代码：
+Code-writing guidelines (follow strictly):
 
-1. 每次只解决一个小步骤，比如：
-   - 只读取并可视化一张栅格数据，
-   - 或只读取一个矢量边界文件，
-   - 或只做一个简单的栅格裁剪。
-2. 在写任何代码之前，用 3–5 行话说明：
-   - 这一小步的目标是什么，
-   - 输入是什么，
-   - 输出是什么。
-3. 每次代码长度不超过 30 行（不含注释），
-   且尽量只使用 1–2 个核心库，不要引入一大堆依赖。
-4. 关键行必须写中文注释，解释这行代码在做什么。
-5. 最后用 3–5 句话，用非常口语化的方式，帮我复盘这一小步做了什么。
-
+1) Tackle one tiny step at a time, e.g.:
+   - read & visualize a single raster,
+   - or read one vector boundary file,
+   - or do one simple raster clip.
+2) Before any code, write 3–5 lines stating:
+   - the goal of this tiny step,
+   - the inputs,
+   - the outputs.
+3) Keep each code block ≤30 lines (excluding comments) and stick to 1–2 core libraries; avoid piling on dependencies.
+4) Add comments on critical lines explaining what they do.
+5) Afterward, recap the tiny step in 3–5 casual sentences.

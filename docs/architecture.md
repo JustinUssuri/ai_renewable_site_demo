@@ -1,21 +1,19 @@
-# 架构概览
+# Architecture Overview
 
-目前文档规模不大，概念层与实现层的关系紧密，放在一个文件里更方便同步维护，因此暂不拆分成两个 md（后续若 Web/App 与数据处理演进出更多职责，再按层拆分）。
+Docs are small, so concept and implementation live together here; we can split later if Web/App diverges.
 
-## 概念层（业务流程）
-
+## Concept (business flow)
 ```mermaid
 flowchart LR
-    A[原始数据\nDEM / 辐照度 / 土地利用 / OSM 电网] --> B[统一边界\nregion_boundary.geojson]
-    B --> C[栅格预处理\n重投影 + 裁剪]
-    C --> D[特征工程\n坡度/距离/土地利用栅格]
-    D --> E[评分模型\n归一化 + 权重]
-    E --> F[输出\nscore.tif + TopN]
-    F --> G[可视化 & Demo\nNotebook + Streamlit]
+    A[Raw data\nDEM / irradiance / landcover / OSM grid] --> B[Unified boundary\nregion_boundary.geojson]
+    B --> C[Raster prep\nreproject + clip]
+    C --> D[Feature engineering\nslope / distance / landcover rasters]
+    D --> E[Scoring\nnormalization + weights]
+    E --> F[Outputs\nscore.tif + TopN]
+    F --> G[Visualization & Demo\nNotebook + Streamlit]
 ```
 
-## 实现层（代码与文件）
-
+## Implementation (code & files)
 ```mermaid
 flowchart TB
     subgraph Data Prep
@@ -42,8 +40,8 @@ flowchart TB
     processed --> N1
 ```
 
-> **关联说明**：
-> - `scripts/*` 负责一次性/独立的准备工作，例如 dissolve 边界、检查 DEM。
-> - `src/data/preprocess.py` 提供可复用函数（读取边界、重投影、裁剪）供 notebooks 与 pipeline 共享。
-> - `src/features/*` 以预处理产物为输入，生成特征与最后的评分。
-> - `notebooks`、`src/viz`、`app/app.py` 共享评分结果进行可视化与交互展示。
+**Notes**:
+- `scripts/*` handle one-off prep (e.g., dissolve boundary, inspect DEM).
+- `src/data/preprocess.py` offers reusable helpers (load boundary, reproject, clip) for notebooks/pipelines.
+- `src/features/*` consume preprocessed rasters to produce features and scores.
+- `notebooks`, `src/viz`, `app/app.py` visualize and interact with scoring outputs.

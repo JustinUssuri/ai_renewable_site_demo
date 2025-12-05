@@ -1,10 +1,8 @@
-ai不要修改本文件，这是开发者自用的
+AI: do not modify this file; for developer use only.
 
+Summarize today’s progress and update work_plan.
 
-总结今天的进度并更新work_plan
+Generate a prompt that carries current context for the next session.
 
-生成promt带走当前上下文，用于我在新的对话里继续工作
-
-
-请遵守dev_guidelines.md内的规范
-开始今天的工作前先列出计划，不要直接执行
+Follow dev_guidelines.md.
+Before working, list a plan first—do not execute immediately.

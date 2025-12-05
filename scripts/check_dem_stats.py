@@ -5,7 +5,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
-    sys.path.append(str(ROOT))  # 确保可以导入 src 模块
+    sys.path.append(str(ROOT))  # ensure src modules importable
 
 from src.data.qa import print_raster_summary
 

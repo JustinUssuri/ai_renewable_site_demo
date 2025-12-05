@@ -8,7 +8,7 @@ import rasterio
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
-    sys.path.append(str(ROOT))  # 确保可以导入 src 模块
+    sys.path.append(str(ROOT))  # ensure src modules importable
 
 from src.data.qa import print_raster_summary
 
@@ -21,9 +21,9 @@ if __name__ == "__main__":
         raise SystemExit(f"Irradiance file not found: {IRR_PATH}")
     print_raster_summary(IRR_PATH)
 
-    # 读取原始值，查看 nodata 并手动过滤
+    # Read raw values to inspect nodata and filter manually
     with rasterio.open(IRR_PATH) as ds:
-        raw = ds.read(1)  # 不使用 mask，直接读取原始栅格
+        raw = ds.read(1)  # read raw raster without mask
         nodata = ds.nodata
     print(f"Nodata value: {nodata}")
     print(
@@ -33,7 +33,7 @@ if __name__ == "__main__":
         float(np.nanmax(raw)),
     )
     if nodata is not None:
-        mask = raw != nodata  # 过滤 nodata
+        mask = raw != nodata  # filter nodata
         print(
             "Valid stats (exclude nodata):",
             float(np.nanmin(raw[mask])),

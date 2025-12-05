@@ -9,7 +9,7 @@ from rasterio.warp import Resampling, reproject
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
-    sys.path.append(str(ROOT))  # 允许导入 src 模块
+    sys.path.append(str(ROOT))  # allow importing src modules
 
 DEM_SRC = ROOT / "data/interim/dem_clipped.tif"
 IRR_REF = ROOT / "data/interim/irradiance_reproj.tif"
@@ -58,7 +58,7 @@ if __name__ == "__main__":
             resampling=Resampling.average,  # aggregate high-res slope to 4.4 km grid
         )
 
-        # 对齐辐照度掩膜：辐照度 nodata 的地方，坡度也设为 nodata
+        # Align irradiance mask: set slope nodata wherever irradiance is nodata
         irr_arr = ref_ds.read(1)
         destination[irr_arr == ref_ds.nodata] = nodata_value
 

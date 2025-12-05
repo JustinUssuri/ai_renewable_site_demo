@@ -7,7 +7,7 @@ import rasterio
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
-    sys.path.append(str(ROOT))  # 允许导入 src 模块
+    sys.path.append(str(ROOT))  # allow importing src modules
 
 DEM_PATH = Path("data/interim/dem_clipped.tif")
 IRR_PATH = Path("data/interim/irradiance_reproj.tif")
@@ -32,4 +32,4 @@ if __name__ == "__main__":
     print("Irradiance bounds:", irr_bounds)
     ratio_x = irr_res[0] / dem_res[0]
     ratio_y = irr_res[1] / dem_res[1]
-    print(f"Resolution ratio (irr/dem): {ratio_x:.1f}x, {ratio_y:.1f}x")  # 辐照度像元是 DEM 的多少倍
+    print(f"Resolution ratio (irr/dem): {ratio_x:.1f}x, {ratio_y:.1f}x")  # irradiance pixels vs DEM

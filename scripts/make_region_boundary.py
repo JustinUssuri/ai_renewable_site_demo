@@ -19,12 +19,11 @@ def main() -> None:
     print("rows:", len(gdf), "columns:", list(gdf.columns))
     print("source CRS:", gdf.crs)
 
-    # 投影到统一 CRS（方便后面做距离）
+    # Reproject to target CRS (for distance calculations later)
     gdf = gdf.to_crs(TARGET_CRS)
 
-    # dissolve：把所有 county 融成一个多边形
-    # 如果有 county 名字段，比如 "COUNTY" / "COUNTY_NA" 等，不用分组，直接 dissolve()
-    country = gdf.dissolve()  # 所有行合并成 1 行
+    # dissolve all counties into a single polygon
+    country = gdf.dissolve()  # combine all rows into one
     country = country.reset_index(drop=True)
 
     print("after dissolve, rows:", len(country))
