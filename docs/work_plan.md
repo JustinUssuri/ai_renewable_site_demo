@@ -16,6 +16,8 @@
 - ✅ Irradiance: clip + reproject → `data/interim/irradiance_reproj.tif`; DEM resampled to 4.4 km → `dem_resampled_to_irradiance.tif`.
 - ✅ Slope: `scripts/compute_slope_resampled.py` produces `data/interim/slope_resampled_to_irradiance.tif` (valid 3,588; mean ≈4.3°).
 - ✅ Notebook refactor: `notebooks/01_explore_data.ipynb` aligned imports/paths; includes DEM/irradiance/slope QA and visuals.
+- ✅ Reviewer polish: top-level `README.md` rewritten with scope, caveats, current functionality, next steps, and embedded example map.
+- ✅ Figures exported: `figures/score_placeholder.png` and `figures/suitable_mask.png` generated from the scoring notebook for documentation.
 
 ## Phase 0: Environment & skeleton (done)
 **Done when**: one command activates env and imports key libs; structure matches overview.
@@ -48,16 +50,19 @@
 
 **Phase 2 Done when**: files exist under `data/interim/` (`slope_resampled_to_irradiance.tif`, `dist_grid.tif`, `dist_roads.tif`, `landcover_clipped.*`); `02_feature_engineering.ipynb` shows distributions with noted thresholds/limitations.
 
-## Phase 3: Scoring & TopN (not started)
+## Phase 3: Scoring & TopN (started)
 - Define masks (slope threshold, landcover whitelist; distance optional later), normalize features, compute `score.tif`.
 - Extract TopN (`top_sites.geojson/csv`) with coordinates and feature values.
 - Notebook `03_scoring_and_maps.ipynb`: heatmap + TopN visualization, metric breakdown.
+- Placeholder scoring plan drafted (`docs/scoring_placeholder.md`): irradiance min-max, slope mask at 8°, landcover whitelist {211, 231, 242, 243, 311, 312}, distance weight = 0 until recompute; target output `data/processed/score_placeholder.tif` with notebook skeleton steps.
+- Placeholder score generated with NaN masking and current weights → `data/processed/score_placeholder.tif` (min ≈0.076, max ≈0.741, mean ≈0.424); notebook `03_scoring_and_maps.ipynb` created with stepwise cells and later polished.
+- Notebook refreshed for reviewers: English narrative up front, per-block explanations, QA tables (min/max/percentiles), consistent histograms, spatial score map with region boundary overlay, binary suitable mask (threshold 0.55), figure exports, and interpretation notes; `SCORING_PARAMS` dict centralizes tunable thresholds/weights.
 
 ## Phase 4: Web demo & docs (not started)
 - Streamlit map, TopN points, metric breakdown.
 - Docs: data sources, processing flow, run guide.
 
 ## Next priorities
-1) Kick off scoring: select features (irradiance, slope, landcover; distance optional later), design normalization/weights, build availability mask, write placeholder `score.tif`.
-2) Draft `03_scoring_and_maps.ipynb`: heatmap/TopN plan and metric breakdown.
-3) Document resolution/mask constraints and distance data limitations (recompute deferred).
+1) Calibrate land-cover classes/weights and slope thresholds with domain input; revisit distance layers once recomputed at finer resolution and reflect in `SCORING_PARAMS`.
+2) Add a lightweight TopN/summary export (geojson/csv) from the composite score to prep for Phase 4 map/app integration.
+3) Extend docs with a short “scenario tuning” note showing how to adjust parameters and re-export figures/rasters; keep README/example maps refreshed after changes.
